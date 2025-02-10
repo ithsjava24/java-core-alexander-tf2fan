@@ -153,8 +153,7 @@ public class Warehouse {
         return changedProductID.contains(productID);
     }
     public int getChangeProduct(UUID productID) {
-        int changedProductIndex = changeProductRecordList.indexOf(productID);
-        return changedProductIndex;
+        return changeProductRecordList.indexOf(productID);
     }
 
 }

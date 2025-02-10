@@ -91,8 +91,12 @@ public class Warehouse {
     public void updateProductPrice(UUID productId, BigDecimal price) {
         getProductById(productId).ifPresentOrElse(product -> {ProductRecord updatedProductPrice = new ProductRecord(productId, product.productName(), product.category(),price);
         int theProductThatPriceWillChange = productRecordList.indexOf(product);
-        changeProductRecordList.add(productRecordList.get(theProductThatPriceWillChange)); // Här är lösningen (Tror jag) till den sista testet
             if(theProductThatPriceWillChange != -1) {
+                if(!doubleCheckChangedProducts(productId)) {
+                    changeProductRecordList.add(productRecordList.get(theProductThatPriceWillChange));// Här är lösningen (Tror jag) till den sista testet
+                } else {
+                    changeProductRecordList.set(getChangeProduct(productId),product);
+                }
                 productRecordList.set(theProductThatPriceWillChange, updatedProductPrice);
                 if(!changedProductID.contains(productId)) {
                     this.changedProductID.add(updatedProductPrice.uuid());
@@ -143,6 +147,14 @@ public class Warehouse {
                 System.out.println("It not the same id");
             }
         }
+    }
+
+    public boolean doubleCheckChangedProducts(UUID productID) {
+        return changedProductID.contains(productID);
+    }
+    public int getChangeProduct(UUID productID) {
+        int changedProductIndex = changeProductRecordList.indexOf(productID);
+        return changedProductIndex;
     }
 
 }
